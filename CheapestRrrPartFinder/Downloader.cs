@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Net;
-using System.Web;
 
 namespace CheapestRrrPartFinder
 {
     public class Downloader
     {
-        public List<(decimal price, string url)> Download(string url)
+        public List<(decimal price, string url)> Download(string url, Action<int, int> callback)
         {
             var list = new List<(decimal price, string url)>();
             var html = DownloadHtml(url);
@@ -24,7 +22,7 @@ namespace CheapestRrrPartFinder
 
                 list.AddRange(ParsePrieceAndUrl(html));
 
-                System.Threading.Thread.Sleep(5000);
+                callback(i, totalPages);
             }
 
             return list;
